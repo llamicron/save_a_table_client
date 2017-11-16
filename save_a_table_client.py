@@ -24,7 +24,7 @@ def post_data(url, data):
     return request.text
 
 def log_response(response, posted_data):
-    with open(expanduser("~") + "/table_log", 'w') as file:
+    with open(expanduser("~") + "/table_log", 'a') as file:
         file.write("Request made at " + time.strftime("%H:%M:%S") + " on " + time.strftime("%d/%m/%Y") )
         file.write("\n")
         file.write("posted_data: ")
