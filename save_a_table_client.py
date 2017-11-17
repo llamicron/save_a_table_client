@@ -1,7 +1,14 @@
-import requests
 import json
 import time
+import requests
 from os.path import expanduser
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(5, GPIO.IN)
+GPIO.setup(22, GPIO.OUT)
+old_button_status = GPIO.input(5)
+
 
 table_data_file = expanduser("~") + "/table_data"
 
@@ -11,6 +18,7 @@ table = json.loads(open(table_data_file, 'r').read())
 
 switch_state = 1
 
+
 data = {
     'table': {
         'number': table['number'],
@@ -19,10 +27,12 @@ data = {
     }
 }
 
+# Post data to save_a_table site
 def post_data(url, data):
     request = requests.post(url, headers={'Content-Type': 'application/json'},  data=json.dumps(data))
     return request.text
 
+# Log response in logfile
 def log_response(response, posted_data):
     with open(expanduser("~") + "/table_log", 'a') as file:
         file.write("Request made at " + time.strftime("%H:%M:%S") + " on " + time.strftime("%d/%m/%Y") )
@@ -35,5 +45,18 @@ def log_response(response, posted_data):
         file.write("\n")
 
 
-response = post_data(url, data)
-log_response(response, data)
+# Detect switch loop, post data when flipped
+while True:
+    button_status = GPIO.input(5)
+    # Don't know if this is necessary...
+    # GPIO.output(22, button_status)
+    if old_button_status != button_status:
+        data['table']['state'] = button_status
+        response = post_data(url, data)
+        log_response(response, data)
+        print(button_status)
+        old_button_status = button_status
+    time.sleep(0.2)
+GPIO.cleanup()
+
+
