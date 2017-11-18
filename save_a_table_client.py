@@ -1,7 +1,6 @@
 import json
 import time
 import requests
-from os.path import expanduser
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
@@ -31,7 +30,7 @@ def post_data(url, data):
 
 # Log response in logfile
 def log_response(response, posted_data):
-    with open(expanduser("~") + "/table_log", 'a') as file:
+    with open("table_log", 'a') as file:
         file.write("Request made at " + time.strftime("%H:%M:%S") + " on " + time.strftime("%d/%m/%Y") )
         file.write("\n")
         file.write("posted_data: ")
