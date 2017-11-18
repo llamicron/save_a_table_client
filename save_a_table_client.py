@@ -10,14 +10,11 @@ GPIO.setup(22, GPIO.OUT)
 old_button_status = GPIO.input(5)
 
 
-table_data_file = expanduser("~") + "/table_data"
-
 url = 'http://ec2-54-200-137-241.us-west-2.compute.amazonaws.com:5000/update-table'
 
-table = json.loads(open(table_data_file, 'r').read())
+table = json.loads(open("table_data", 'r').read())
 
 switch_state = 1
-
 
 data = {
     'table': {
@@ -54,9 +51,6 @@ while True:
         data['table']['state'] = button_status
         response = post_data(url, data)
         log_response(response, data)
-        print(button_status)
         old_button_status = button_status
     time.sleep(0.2)
 GPIO.cleanup()
-
-
