@@ -15,8 +15,8 @@ GPIO.setup(22, GPIO.OUT)
 old_button_status = GPIO.input(5)
 
 
-# url = 'http://ec2-54-200-137-241.us-west-2.compute.amazonaws.com:5000/update-table'
-url = 'http://192.168.0.59:5000/update-table'
+url = 'http://ec2-54-200-137-241.us-west-2.compute.amazonaws.com:5000/update-table'
+# url = 'http://192.168.0.59:5000/update-table'
 
 
 table = json.loads(open(path + "/table_data", 'r').read())
