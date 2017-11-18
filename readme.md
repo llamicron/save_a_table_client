@@ -13,3 +13,8 @@ Put a file in this directory called `table_data`, containing this:
 ```
 
 And replace the proper values with the values for the table.
+
+Start `save_a_table_client.py` in the background:
+```bash
+$ python save_a_table_client.py &
+```

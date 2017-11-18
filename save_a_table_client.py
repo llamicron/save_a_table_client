@@ -1,7 +1,10 @@
 import json
+import os
 import time
 import requests
 import RPi.GPIO as GPIO
+
+path = os.path.dirname(os.path.abspath(__file__))
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(5, GPIO.IN)
@@ -11,7 +14,7 @@ old_button_status = GPIO.input(5)
 
 url = 'http://ec2-54-200-137-241.us-west-2.compute.amazonaws.com:5000/update-table'
 
-table = json.loads(open("table_data", 'r').read())
+table = json.loads(open(path + "/table_data", 'r').read())
 
 switch_state = 1
 
@@ -30,7 +33,7 @@ def post_data(url, data):
 
 # Log response in logfile
 def log_response(response, posted_data):
-    with open("table_log", 'a') as file:
+    with open(path + "/table_log", 'a') as file:
         file.write("Request made at " + time.strftime("%H:%M:%S") + " on " + time.strftime("%d/%m/%Y") )
         file.write("\n")
         file.write("posted_data: ")
